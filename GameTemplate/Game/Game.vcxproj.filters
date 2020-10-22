@@ -31,6 +31,15 @@
     <Filter Include="system">
       <UniqueIdentifier>{48b58c60-bbe2-40d8-9d2f-e81d065b6820}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets\modelData\Ika">
+      <UniqueIdentifier>{3147a797-0e1e-45fa-939b-e3c28f86df46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="gameObject">
+      <UniqueIdentifier>{53917074-47e8-4ed7-b812-b7178f423059}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Assets\modelData\Kari">
+      <UniqueIdentifier>{a18f55e4-e5b4-4ee9-9760-837abf057fa3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="math\Vector.cpp">
@@ -108,6 +117,12 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp" />
+    <ClCompile Include="GameObjectManager.cpp">
+      <Filter>gameObject</Filter>
+    </ClCompile>
+    <ClCompile Include="IGameObject.cpp">
+      <Filter>gameObject</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="math\Vector.h">
@@ -193,10 +208,22 @@
     </ClInclude>
     <ClInclude Include="Player.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="GameObjectManager.h">
+      <Filter>gameObject</Filter>
+    </ClInclude>
+    <ClInclude Include="IGameObject.h">
+      <Filter>gameObject</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <MeshContentTask Include="Assets\modelData\unityChan.fbx">
       <Filter>Assets\modelData</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\Ika\a_inkling1.fbx">
+      <Filter>Assets\modelData\Ika</Filter>
+    </MeshContentTask>
+    <MeshContentTask Include="Assets\modelData\Kari\Karimodel.fbx">
+      <Filter>Assets\modelData\Kari</Filter>
     </MeshContentTask>
   </ItemGroup>
 </Project>

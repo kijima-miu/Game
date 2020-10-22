@@ -9,7 +9,9 @@
 
 
 
+
 class Skeleton;
+class Bone;
 class SkinModel;
 
 
@@ -26,7 +28,7 @@ public:
 		*@param[in]	animeClipList	アニメーションクリップの配列。
 		*@param[in]	numAnimClip		アニメーションクリップの数。
 		*/
-	void Init(SkinModel& skinModel, AnimationClip animClipList[], int numAnimClip);
+	void Init(SkinModel& skinModel, AnimationClip animClipList[], int numAnimClip, bool Up, const wchar_t* filePathy);
 
 		
 	/*!
@@ -56,6 +58,16 @@ public:
 	*/
 	void Update(float deltaTime);
 	
+	/*Skeleton GetBone()
+	{
+		return *m_skeleton;
+	}*/
+	/*Bone* FindBone(const wchar_t* boneName)
+	{
+		int boneId = m_skeleton.FindBoneID(boneName);
+		return m_skeleton.GetBone(boneId);
+	}*/
+
 private:
 	void PlayCommon(AnimationClip* nextClip, float interpolateTime)
 	{
@@ -87,7 +99,13 @@ private:
 	void UpdateGlobalPose();
 		
 private:
-		
+	
+	/*!
+	*@brief	スケルトンの初期化。
+	*@param[in]	filePath		ロードするcmoファイルのファイルパス。
+	*/
+	void InitSkeleton(const wchar_t* filePath);
+
 	/*!
 		*@brief	最終ポーズになるアニメーションのリングバッファ上でのインデックスを取得。
 		*/
@@ -108,11 +126,15 @@ private:
 	static const int ANIMATION_PLAY_CONTROLLER_NUM = 32;			//!<アニメーションコントローラの数。
 	std::vector<AnimationClip*>	m_animationClips;					//!<アニメーションクリップの配列。
 	Skeleton* m_skeleton = nullptr;	//!<アニメーションを適用するスケルトン。
+	Bone* m_bone = nullptr;
 	AnimationPlayController	m_animationPlayController[ANIMATION_PLAY_CONTROLLER_NUM];	//!<アニメーションコントローラ。リングバッファ。
 	int m_numAnimationPlayController = 0;		//!<現在使用中のアニメーション再生コントローラの数。
 	int m_startAnimationPlayController = 0;		//!<アニメーションコントローラの開始インデックス。
 	float m_interpolateTime = 0.0f;
 	float m_interpolateTimeEnd = 0.0f;
 	bool m_isInterpolate = false;				//!<補間中？
+	//Skeleton skeleton;
+
+	std::wstring	m_NameBone;
 
 };

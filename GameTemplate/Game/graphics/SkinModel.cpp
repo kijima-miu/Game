@@ -13,10 +13,10 @@ SkinModel::~SkinModel()
 		m_samplerState->Release();
 	}
 }
-void SkinModel::Init(const wchar_t* filePath, EnFbxUpAxis enFbxUpAxis)
+void SkinModel::Init(const wchar_t* filePath, /*const wchar_t* skUp, const wchar_t* skLow,*/EnFbxUpAxis enFbxUpAxis)
 {
 	//スケルトンのデータを読み込む。
-	InitSkeleton(filePath);
+	//InitSkeleton(filePath);
 
 	//定数バッファの作成。
 	InitConstantBuffer();

@@ -191,6 +191,13 @@ public:
 	*@brief	ボーン行列の配列をGPUに転送。
 	*/
 	void SendBoneMatrixArrayToGPU();
+
+	//ボーンの名前を返す
+	/*const wchar_t* GetNameBone() const
+	{
+		Bone->GetName();
+	}*/
+
 public:
 	/*!
 	*@brief	ボーン行列のストラクチャードバッファを初期化。

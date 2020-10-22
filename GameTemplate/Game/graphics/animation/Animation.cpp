@@ -8,6 +8,9 @@
 #include "graphics/skeleton.h"
 #include "graphics/skinModel.h"
 
+#include <corecrt_wstring.h>
+#include <string>
+
 Animation::Animation()
 {
 }
@@ -16,7 +19,7 @@ Animation::~Animation()
 	
 }
 	
-void Animation::Init(SkinModel& skinModel, AnimationClip animClipList[], int numAnimClip)
+void Animation::Init(SkinModel& skinModel, AnimationClip animClipList[], int numAnimClip, bool Up, const wchar_t* filePath)
 {
 	if (animClipList == nullptr) {
 #ifdef _DEBUG
@@ -28,7 +31,31 @@ void Animation::Init(SkinModel& skinModel, AnimationClip animClipList[], int num
 #endif
 		
 	}
-	m_skeleton = &skinModel.GetSkeleton();
+	//スケルトンのデータを読み込む。
+	InitSkeleton(filePath);
+	//m_skeleton = &skinModel.GetSkeleton();
+	int BoneNum = m_skeleton->GetNumBones();
+	//Upがtrueなら上のボーンを探す
+	if (Up == true) {
+		//ボーンの名前取得
+		m_NameBone = m_bone->GetName();
+		for (int i = 0; i > BoneNum; i++) {
+			//検索
+
+
+			//int UpNum = m_NameBone.rfind("_u");
+		}
+
+	}
+	//Upがflseなら下のボーン
+	else {
+		//ボーンの名前取得
+		m_NameBone = m_bone->GetName();
+		//検索
+
+
+	}
+
 
 	for (int i = 0; i < numAnimClip; i++) {
 		m_animationClips.push_back(&animClipList[i]);
@@ -157,7 +184,28 @@ void Animation::UpdateGlobalPose()
 	m_numAnimationPlayController = numAnimationPlayController;
 }
 	
-
+void SkinModel::InitSkeleton(const wchar_t* filePath)
+{
+	//スケルトンのデータを読み込む。
+	//cmoファイルの拡張子をtksに変更する。
+	std::wstring skeletonFilePath = filePath;
+	//文字列から.cmoファイル始まる場所を検索。
+	int pos = (int)skeletonFilePath.find(L".cmo");
+	//.cmoファイルを.tksに置き換える。
+	skeletonFilePath.replace(pos, 4, L".tks");
+	//tksファイルをロードする。
+	bool result = m_skeleton.Load(skeletonFilePath.c_str());
+	if (result == false) {
+		//スケルトンが読み込みに失敗した。
+		//アニメーションしないモデルは、スケルトンが不要なので
+		//読み込みに失敗することはあるので、ログ出力だけにしておく。
+#ifdef _DEBUG
+		char message[256];
+		sprintf(message, "tksファイルの読み込みに失敗しました。%ls\n", skeletonFilePath.c_str());
+		OutputDebugStringA(message);
+#endif
+	}
+}
 	
 void Animation::Update(float deltaTime)
 {
