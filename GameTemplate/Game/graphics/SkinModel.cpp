@@ -2,6 +2,46 @@
 #include "SkinModel.h"
 #include "SkinModelDataManager.h"
 
+//using namespace std;
+
+/*!
+*@brief	ディレクションライト。
+*/
+struct SDirectionLight {
+	CVector4 direction;		//ライトの方向。
+	CVector4 color;			//ライトのカラー。
+};
+class C3DModelDraw {
+	//定数バッファ。
+	struct SVSConstantBuffer {
+		CMatrix mWorld;
+		CMatrix mView;
+		CMatrix mProj;
+	};
+};
+//ID3D11Buffer* m_cb = nullptr;						//!<定数バッファ。
+ID3D11Buffer* m_lightCb = nullptr;
+SDirectionLight		m_dirLight;
+
+public:
+	//デストラクタ。
+	~C3DModelDraw()
+	{
+		//定数バッファを解放。
+		/*if (m_cb != nullptr) {
+			m_cb->Release();
+		}*/
+		//ライト用の定数バッファの解放。
+		if (m_lightCb != nullptr) {
+			m_lightCb->Release();
+		}
+	}
+	void InitDirectionLight()
+	{
+		m_dirLight.direction = { 1.0f, 0.0f, 0.0f, 0.0f };
+		m_dirLight.color = { 1.0f, 0.0f, 0.0f, 1.0f };
+	}
+
 SkinModel::~SkinModel()
 {
 	if (m_cb != nullptr) {
@@ -109,6 +149,17 @@ void SkinModel::Draw(CMatrix viewMatrix, CMatrix projMatrix)
 	DirectX::CommonStates state(g_graphicsEngine->GetD3DDevice());
 
 	ID3D11DeviceContext* d3dDeviceContext = g_graphicsEngine->GetD3DDeviceContext();
+
+	//ライト
+	deviceContext->UpdateSubresource(m_cb, 0, nullptr, &vsCb, 0, 0);
+	//ライト用の定数バッファを更新。
+	deviceContext->UpdateSubresource(m_lightCb, 0, nullptr, &m_dirLight, 0, 0);
+
+	//定数バッファをシェーダースロットに設定。
+	deviceContext->VSSetConstantBuffers(0, 1, &m_cb);
+	deviceContext->PSSetConstantBuffers(0, 1, &m_lightCb);
+	/**/
+
 
 	//定数バッファの内容を更新。
 	SVSConstantBuffer vsCb;
